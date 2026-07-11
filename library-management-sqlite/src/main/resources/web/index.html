@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athena - Library Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App Background Shapes -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Login/Register Container -->
+    <div id="auth-container" class="auth-card glass-panel">
+        <div class="auth-header">
+            <div class="logo">
+                <span class="logo-icon">📖</span>
+                <h2>Athena</h2>
+            </div>
+            <p>Library Management System</p>
+        </div>
+
+        <div class="tabs">
+            <button id="tab-login" class="tab-btn active" onclick="switchAuthTab('login')">Login</button>
+            <button id="tab-register" class="tab-btn" onclick="switchAuthTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" placeholder="e.g. admin or vikaasni" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form hidden" onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" placeholder="e.g. read_lover" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-fullname">Full Name</label>
+                <input type="text" id="reg-fullname" placeholder="e.g. Jane Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="reg-genre">Favorite Genre</label>
+                <input type="text" id="reg-genre" placeholder="e.g. Technology, Science, Fiction" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div id="main-container" class="hidden">
+        <header class="app-header glass-panel">
+            <div class="header-brand">
+                <span class="logo-icon">📖</span>
+                <h1>Athena</h1>
+            </div>
+            <div class="header-user">
+                <div class="user-badge">
+                    <span id="user-avatar" class="avatar">👤</span>
+                    <div class="user-info">
+                        <span id="header-user-name" class="user-name">Loading...</span>
+                        <span id="header-user-role" class="user-role">Role</span>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="btn btn-secondary btn-sm">Logout</button>
+            </div>
+        </header>
+
+        <main class="app-content">
+            <!-- ADMIN VIEWS -->
+            <section id="admin-section" class="hidden">
+                <!-- Admin Stats Row -->
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon purple-gradient">📚</div>
+                        <div class="stat-content">
+                            <h3>Total Books</h3>
+                            <p id="stat-total-books">-</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon blue-gradient">👥</div>
+                        <div class="stat-content">
+                            <h3>Active Loans</h3>
+                            <p id="stat-active-loans">-</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon green-gradient">🔄</div>
+                        <div class="stat-content">
+                            <h3>Catalog Items</h3>
+                            <p id="stat-catalog-items">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Book Actions -->
+                <div class="admin-grid">
+                    <!-- ISBN Fetcher -->
+                    <div class="glass-panel content-card">
+                        <div class="card-header">
+                            <h2>Import via Google Books API</h2>
+                            <p>Enter an ISBN and we will fetch details automatically</p>
+                        </div>
+                        <form onsubmit="handleIsbnImport(event)">
+                            <div class="form-group">
+                                <label for="isbn-input">ISBN-10 or ISBN-13</label>
+                                <div class="input-action-group">
+                                    <input type="text" id="isbn-input" placeholder="e.g. 9780132350884" required>
+                                    <button type="submit" class="btn btn-primary">Fetch & Add</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="isbn-copies">Number of Copies</label>
+                                <input type="number" id="isbn-copies" value="1" min="1" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Manual Book Ingestion -->
+                    <div class="glass-panel content-card">
+                        <div class="card-header">
+                            <h2>Add Book Manually</h2>
+                            <p>Fill out the catalog details directly</p>
+                        </div>
+                        <form onsubmit="handleManualAdd(event)">
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="book-title">Title</label>
+                                    <input type="text" id="book-title" placeholder="e.g. Design Patterns" required>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="book-isbn">ISBN (optional)</label>
+                                    <input type="text" id="book-isbn" placeholder="e.g. 9780201633610">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="book-authors">Authors (comma separated)</label>
+                                    <input type="text" id="book-authors" placeholder="e.g. Erich Gamma, Richard Helm" required>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="book-genre">Genre</label>
+                                    <input type="text" id="book-genre" placeholder="e.g. Software Engineering" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="book-published">Published Year/Date</label>
+                                    <input type="text" id="book-published" placeholder="e.g. 1994">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="book-copies">Copies</label>
+                                    <input type="number" id="book-copies" value="1" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="book-description">Description</label>
+                                <textarea id="book-description" rows="2" placeholder="Brief overview of the book content..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Ingest into Catalog</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MEMBER VIEWS -->
+            <section id="member-section" class="hidden">
+                <div class="member-grid">
+                    <!-- Recommendations Panel -->
+                    <div class="glass-panel content-card recommendations-card">
+                        <div class="card-header">
+                            <h2>✨ Recommended For You</h2>
+                            <p>Based on your favorite genre and borrowing history</p>
+                        </div>
+                        <div id="recommendations-container" class="books-horizontal-scroll">
+                            <p class="placeholder-text">Checking recommendations...</p>
+                        </div>
+                    </div>
+
+                    <!-- My Active Loans -->
+                    <div class="glass-panel content-card">
+                        <div class="card-header">
+                            <h2>📋 My Borrowed Books</h2>
+                            <p>Return books on time to avoid a fine of ₹5.00/day</p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Book Title</th>
+                                        <th>Issue Date</th>
+                                        <th>Due Date</th>
+                                        <th>Overdue Fine</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="active-loans-body">
+                                    <tr>
+                                        <td colspan="5" class="placeholder-text text-center">You have no active loans. Explore books below to borrow!</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SHARED BOOK EXPLORER -->
+            <section id="explorer-section" class="glass-panel content-card">
+                <div class="explorer-header">
+                    <div class="card-header">
+                        <h2>📚 Library Catalog</h2>
+                        <p>Explore all available titles, search by keyword, author, or genre</p>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Search title, author, or genre..." oninput="handleSearch()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+
+                <div id="catalog-grid" class="catalog-grid">
+                    <!-- Dynamic Book Cards -->
+                    <p class="placeholder-text text-center">Loading catalog...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
