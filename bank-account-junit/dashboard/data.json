@@ -1,0 +1,290 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-10T21:13:26.4210668"
+  },
+  "testRun": {
+    "totalTests": 31,
+    "successes": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "timeSeconds": 1.814,
+    "testSuites": [
+    {
+      "name": "com.vikaasni.bankapp.model.BankAccountConcurrencyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.139,
+      "cases": [
+        {
+          "name": "simultaneousWithdrawalsShouldBeThreadSafe",
+          "time": 0.105,
+          "status": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "name": "com.vikaasni.bankapp.model.BankAccountTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.063,
+      "cases": [
+        {
+          "name": "withdrawingMoreThanBalanceShouldThrowException",
+          "time": 0.009,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "transactionHistoryShouldBeUnmodifiable",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "zeroDepositShouldThrowException",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "balanceInquiryShouldReturnCurrentBalance",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "constructorWithNullOrBlankAccountNumberShouldThrowException",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "withdrawalShouldAddTransactionToHistory",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "constructorWithNullOrBlankAccountHolderNameShouldThrowException",
+          "time": 0.005,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "withdrawalShouldDecreaseBalance",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "constructorWithoutOpeningBalanceShouldInitializeToZero",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "constructorWithNegativeOpeningBalanceShouldThrowException",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "depositShouldIncreaseBalance",
+          "time": 0.004,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "depositShouldAddTransactionToHistory",
+          "time": 0.004,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "negativeWithdrawalShouldThrowException",
+          "time": 0.002,
+          "status": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "name": "com.vikaasni.bankapp.repository.FileAccountRepositoryTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.1,
+      "cases": [
+        {
+          "name": "nonExistentFileShouldBeEmpty",
+          "time": 0.066,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "saveAndLoadAccount",
+          "time": 0.01,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "malformedBalanceShouldThrowException",
+          "time": 0.009,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "skippedLinesTest",
+          "time": 0.008,
+          "status": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "name": "com.vikaasni.bankapp.repository.InMemoryAccountRepositoryTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 0.015,
+      "cases": [
+        {
+          "name": "findNonExistentAccount",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "findAllAccounts",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "existsByAccountNumber",
+          "time": 0.002,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "saveAndFindAccount",
+          "time": 0.001,
+          "status": "SUCCESS"
+        }
+      ]
+    },
+    {
+      "name": "com.vikaasni.bankapp.service.BankServiceTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": 1.497,
+      "cases": [
+        {
+          "name": "createAccountShouldSaveAccount",
+          "time": 1.454,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "getAccountShouldReturnAccount",
+          "time": 0.006,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "depositShouldUpdateAndSaveAccount",
+          "time": 0.004,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "withdrawShouldUpdateAndSaveAccount",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "getTransactionHistoryShouldReturnHistory",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "duplicateAccountNumberShouldBeRejected",
+          "time": 0.006,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "getAllAccountsShouldReturnList",
+          "time": 0.004,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "unknownAccountShouldThrowException",
+          "time": 0.003,
+          "status": "SUCCESS"
+        },
+        {
+          "name": "getBalanceShouldReturnCorrectBalance",
+          "time": 0.003,
+          "status": "SUCCESS"
+        }
+      ]
+    }
+    ]
+  },
+  "coverage": {
+    "instruction": {
+      "covered": 530,
+      "missed": 1311,
+      "percentage": 28.79
+    },
+    "branch": {
+      "covered": 29,
+      "missed": 75,
+      "percentage": 27.88
+    },
+    "line": {
+      "covered": 133,
+      "missed": 294,
+      "percentage": 31.15
+    },
+    "complexity": {
+      "covered": 56,
+      "missed": 61,
+      "percentage": 47.86
+    },
+    "method": {
+      "covered": 42,
+      "missed": 20,
+      "percentage": 67.74
+    },
+    "class": {
+      "covered": 9,
+      "missed": 2,
+      "percentage": 81.82
+    },
+    "packages": [
+      {
+        "name": "com.vikaasni.bankapp.exception",
+        "covered": 6,
+        "missed": 0,
+        "percentage": 100.0
+      },
+      {
+        "name": "com.vikaasni.bankapp.service",
+        "covered": 21,
+        "missed": 0,
+        "percentage": 100.0
+      },
+      {
+        "name": "com.vikaasni.bankapp.model",
+        "covered": 55,
+        "missed": 5,
+        "percentage": 91.67
+      },
+      {
+        "name": "com.vikaasni.bankapp.util",
+        "covered": 0,
+        "missed": 197,
+        "percentage": 0.0
+      },
+      {
+        "name": "com.vikaasni.bankapp",
+        "covered": 0,
+        "missed": 90,
+        "percentage": 0.0
+      },
+      {
+        "name": "com.vikaasni.bankapp.repository",
+        "covered": 51,
+        "missed": 2,
+        "percentage": 96.23
+      }
+    ]
+  }
+}

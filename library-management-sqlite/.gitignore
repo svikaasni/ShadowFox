@@ -1,0 +1,16 @@
+# Maven build files
+target/
+*.class
+
+# SQLite Database and logs
+data/
+*.db
+*.log
+
+# IDE configuration files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+dependency-reduced-pom.xml

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Account Management & Test Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text">TestGrid<span>App</span></span>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-tab="banking">
+                    <i data-lucide="wallet"></i>
+                    <span>Banking Client</span>
+                </a>
+                <a href="#" class="menu-item" data-tab="qa">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Test QA Analytics</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="project-info">
+                    <span class="project-title">Bank App JUnit</span>
+                    <span class="project-version">v1.0.0</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <span class="badge badge-primary">Scriptless</span>
+                    <span class="badge badge-secondary">Local Execution</span>
+                </div>
+                <div class="top-bar-right">
+                    <div class="profile-card">
+                        <div class="avatar">V</div>
+                        <span class="username">Vikaasni</span>
+                        <i data-lucide="chevron-down" class="chevron"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- TAB 1: BANKING CLIENT -->
+            <div class="tab-content active" id="banking-tab">
+                <div class="tab-header">
+                    <h1>Bank Account Management Console</h1>
+                    <p class="tab-desc">Perform real-time operations, manage balances, and inspect statement timelines.</p>
+                </div>
+
+                <!-- Banking Summary Cards -->
+                <section class="metrics-grid">
+                    <div class="metric-card card-primary">
+                        <div class="metric-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="bank-total-accounts">0</span>
+                            <span class="metric-label">TOTAL ACCOUNTS</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card card-success">
+                        <div class="metric-icon">
+                            <i data-lucide="dollar-sign"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="bank-total-balance">Rs. 0.00</span>
+                            <span class="metric-label">TOTAL SYSTEM FUNDS</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card card-coverage">
+                        <div class="metric-icon">
+                            <i data-lucide="user-check"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value selected-holder-name" id="bank-selected-holder">No Selected Account</span>
+                            <span class="metric-label">SELECTED ACCOUNT</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Banking Content Grid -->
+                <div class="banking-grid">
+                    <!-- Left Side: Forms -->
+                    <div class="banking-forms-column">
+                        <!-- Create Account Form -->
+                        <div class="glass-form-card">
+                            <h3><i data-lucide="user-plus"></i> Create Bank Account</h3>
+                            <form id="create-account-form">
+                                <div class="form-group">
+                                    <label for="new-acc-num">Account Number</label>
+                                    <input type="text" id="new-acc-num" placeholder="e.g. ACC1001" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-acc-name">Account Holder Name</label>
+                                    <input type="text" id="new-acc-name" placeholder="e.g. Vikaasni" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-acc-balance">Opening Balance (Rs.)</label>
+                                    <input type="number" id="new-acc-balance" placeholder="0.00" min="0" step="0.01" value="0.00">
+                                </div>
+                                <button type="submit" class="btn btn-submit">Create Account</button>
+                            </form>
+                            <div class="form-message" id="create-message"></div>
+                        </div>
+
+                        <!-- Transactions Form -->
+                        <div class="glass-form-card">
+                            <h3><i data-lucide="arrow-left-right"></i> Post Transaction</h3>
+                            <form id="transaction-form">
+                                <div class="form-group">
+                                    <label for="tx-acc-select">Select Account</label>
+                                    <select id="tx-acc-select" required>
+                                        <option value="" disabled selected>Choose Account...</option>
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tx-type">Transaction Type</label>
+                                    <select id="tx-type" required>
+                                        <option value="DEPOSIT">Deposit (+)</option>
+                                        <option value="WITHDRAWAL">Withdrawal (-)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tx-amount">Amount (Rs.)</label>
+                                    <input type="number" id="tx-amount" placeholder="0.00" min="0.01" step="0.01" required>
+                                </div>
+                                <button type="submit" class="btn btn-submit">Post Transaction</button>
+                            </form>
+                            <div class="form-message" id="tx-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Accounts & Timelines -->
+                    <div class="banking-data-column">
+                        <!-- Accounts List Table -->
+                        <div class="data-table-section">
+                            <div class="table-header">
+                                <h2>Active Bank Accounts</h2>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="test-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Account No.</th>
+                                            <th>Holder Name</th>
+                                            <th>Balance</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bank-accounts-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Mini Statement Logs -->
+                        <div class="data-table-section" id="statement-section">
+                            <div class="table-header">
+                                <h2>Mini Statement Timeline - <span class="selected-holder-name">No Account Selected</span></h2>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="test-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Remaining Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="statement-timeline-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: TEST QA ANALYTICS -->
+            <div class="tab-content" id="qa-tab">
+                <div class="tab-header">
+                    <h1>JUnit Test & Coverage Analyzer</h1>
+                    <p class="tab-desc">Inspect test run summaries, automated code branch verifications, and JUnit surefire outputs.</p>
+                </div>
+
+                <!-- Test Metrics Grid -->
+                <section class="metrics-grid">
+                    <div class="metric-card card-success">
+                        <div class="metric-icon">
+                            <i data-lucide="check-circle-2"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="success-count">0</span>
+                            <span class="metric-label">TOTAL SUCCESS</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card card-failed">
+                        <div class="metric-icon">
+                            <i data-lucide="x-circle"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="failed-count">0</span>
+                            <span class="metric-label">TOTAL FAIL</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card card-skipped">
+                        <div class="metric-icon">
+                            <i data-lucide="stop-circle"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="skipped-count">0</span>
+                            <span class="metric-label">TOTAL STOP/SKIP</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card card-coverage">
+                        <div class="metric-icon">
+                            <i data-lucide="percent"></i>
+                        </div>
+                        <div class="metric-details">
+                            <span class="metric-value" id="coverage-pct">0%</span>
+                            <span class="metric-label">LINE COVERAGE</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visualization Charts -->
+                <section class="charts-section">
+                    <div class="chart-card primary-chart">
+                        <h3>Test Cases Run Timeline</h3>
+                        <div class="chart-container">
+                            <canvas id="runsTimelineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card secondary-chart">
+                        <h3>Code Coverage Breakdown</h3>
+                        <div class="chart-container">
+                            <canvas id="coverageDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detailed Test Cases Table -->
+                <section class="data-table-section">
+                    <div class="table-header">
+                        <h2>Test Case Executions</h2>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="test-search" placeholder="Search test cases...">
+                            </div>
+                            <select id="status-filter">
+                                <option value="ALL">All Statuses</option>
+                                <option value="SUCCESS">Success</option>
+                                <option value="FAILURE">Failure</option>
+                                <option value="ERROR">Error</option>
+                                <option value="SKIPPED">Skipped</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="test-table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Test Method</th>
+                                    <th>Suite / Class Name</th>
+                                    <th>Execution Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="test-cases-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Latest build status / Accordions -->
+                <section class="status-accordions">
+                    <div class="module-status-card">
+                        <span>Latest build module status:</span>
+                        <span class="badge-success-glow" id="build-status-badge">SUCCESS</span>
+                    </div>
+
+                    <!-- Accordion: Bookmarks -->
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Bookmarks (6)</span>
+                            <i data-lucide="chevron-down" class="accordion-icon"></i>
+                        </button>
+                        <div class="accordion-panel">
+                            <ul>
+                                <li><strong>Unit Testing TDD Guide:</strong> vogella.com/tutorials/JUnit/article.html</li>
+                                <li><strong>Testing Exceptions:</strong> lambdatest.com/blog/testing-exceptions-junit/</li>
+                                <li><strong>Mockito Extensions:</strong> javaguides.net/mockito-junit-5-extension</li>
+                                <li><strong>Concurrency Race Conditions:</strong> baeldung.com/java-race-conditions</li>
+                                <li><strong>JaCoCo Maven Integration:</strong> baeldung.com/jacoco</li>
+                                <li><strong>JUnit 5 Lifecycle:</strong> junit.org/junit5/docs/current/user-guide/</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: Notes -->
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Self-Audit Notes (5)</span>
+                            <i data-lucide="chevron-down" class="accordion-icon"></i>
+                        </button>
+                        <div class="accordion-panel">
+                            <ol>
+                                <li><strong>Negative Testing Verified:</strong> Tested excess withdrawals throw `InsufficientFundsException` and invalid deposits throw `InvalidAmountException`.</li>
+                                <li><strong>100% Package Coverage:</strong> Covered all model classes, services, custom exceptions, and in-memory/file repositories.</li>
+                                <li><strong>Test Independence:</strong> Ensured that each test setup instantiates a brand new `BankAccount` inside the `@BeforeEach` method.</li>
+                                <li><strong>Concurrency & Synchronization:</strong> Added thread synchronization on `withdraw()` and wrote `BankAccountConcurrencyTest` simulating two concurrent threads withdrawing money at the exact same instant to prevent double-spending.</li>
+                                <li><strong>Mocking Architecture:</strong> Mocked the database layer using `@Mock AccountRepository` to test `BankService` in absolute isolation without file read/write operations.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Logic Script -->
+    <script src="app.js"></script>
+</body>
+</html>
